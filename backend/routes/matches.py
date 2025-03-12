@@ -36,7 +36,7 @@ def get_matches():
         description: List of matches
     """
     matches = Match.query.all()
-    return jsonify([{"id": m.id, "team1": m.team1, "team2": m.team2, "date": m.date, "location": m.location} for m in matches])
+    return jsonify([{"id": m.id, "team1": m.team1_id, "team2": m.team2_id, "date": m.date, "location": m.location} for m in matches])
 
 @matches_bp.route('/matches', methods=['POST'])
 @swag_from({
@@ -132,7 +132,7 @@ def add_match():
               example: "Invalid input data"
     """
     data = request.json
-    match = Match(team1=data["team1"], team2=data["team2"], date=data["date"], location=data["location"])
+    match = Match(team1_id=data["team1"], team2_id=data["team2"], date=data["date"], location=data["location"])
     db.session.add(match)
     db.session.commit()
     return jsonify({"message": "Match added successfully"}), 201
