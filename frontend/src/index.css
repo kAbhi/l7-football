@@ -244,6 +244,20 @@ form {
   margin-top: 5px;
 }
 
+.dropdown-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-box {
+  padding: 8px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 5px;
+}
+
 select {
   padding: 10px;
   font-size: 1em;
@@ -252,5 +266,4 @@ select {
   background-color: white;
   cursor: pointer;
   width: 100%;
-  margin-bottom: 10px;
 }
