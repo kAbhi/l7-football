@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 const AddMatchForm = ({ onMatchAdded }) => {
@@ -6,7 +6,35 @@ const AddMatchForm = ({ onMatchAdded }) => {
   const [team2, setTeam2] = useState("");
   const [date, setDate] = useState("");
   const [location, setLocation] = useState("");
+  const [teams, setTeams] = useState([]);
+  const [locations, setLocations] = useState([]);
+  const [searchTerm1, setSearchTerm1] = useState("");
+  const [searchTerm2, setSearchTerm2] = useState("");
   const [error, setError] = useState("");
+
+  // Fetch teams and locations for the dropdowns
+  useEffect(() => {
+    const fetchTeams = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/teams");
+        setTeams(res.data);
+      } catch (error) {
+        console.error("Error fetching teams:", error);
+      }
+    };
+
+    const fetchLocations = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/areas");
+        setLocations(res.data);
+      } catch (error) {
+        console.error("Error fetching locations:", error);
+      }
+    };
+
+    fetchTeams();
+    fetchLocations();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,15 +56,65 @@ const AddMatchForm = ({ onMatchAdded }) => {
     }
   };
 
+  // Filter teams based on search term
+  const filteredTeams1 = teams.filter((t) =>
+    t.name.toLowerCase().includes(searchTerm1.toLowerCase())
+  );
+
+  const filteredTeams2 = teams.filter((t) =>
+    t.name.toLowerCase().includes(searchTerm2.toLowerCase())
+  );
+
   return (
     <div>
       <h3>Add New Match</h3>
       {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleSubmit}>
-        <input type="text" value={team1} onChange={(e) => setTeam1(e.target.value)} placeholder="Team 1" required />
-        <input type="text" value={team2} onChange={(e) => setTeam2(e.target.value)} placeholder="Team 2" required />
+        {/* Searchable Team 1 Dropdown */}
+        <div className="dropdown-container">
+          <input
+            type="text"
+            value={searchTerm1}
+            onChange={(e) => setSearchTerm1(e.target.value)}
+            placeholder="Search team 1..."
+            className="search-box"
+          />
+          <select value={team1} onChange={(e) => setTeam1(e.target.value)} required>
+            <option value="">Select Team 1</option>
+            {filteredTeams1.map((team) => (
+              <option key={team.id} value={team.name}>{team.name}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Searchable Team 2 Dropdown */}
+        <div className="dropdown-container">
+          <input
+            type="text"
+            value={searchTerm2}
+            onChange={(e) => setSearchTerm2(e.target.value)}
+            placeholder="Search team 2..."
+            className="search-box"
+          />
+          <select value={team2} onChange={(e) => setTeam2(e.target.value)} required>
+            <option value="">Select Team 2</option>
+            {filteredTeams2.map((team) => (
+              <option key={team.id} value={team.name}>{team.name}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Date Input */}
         <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
-        <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Location" required />
+
+        {/* Location Dropdown */}
+        <select value={location} onChange={(e) => setLocation(e.target.value)} required>
+          <option value="">Select Match Location</option>
+          {locations.map((loc) => (
+            <option key={loc.id} value={loc.name}>{loc.name}</option>
+          ))}
+        </select>
+
         <button type="submit">Add Match</button>
       </form>
     </div>
