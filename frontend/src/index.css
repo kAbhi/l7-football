@@ -243,3 +243,14 @@ form {
   font-weight: bold;
   margin-top: 5px;
 }
+
+select {
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 10px;
+}
