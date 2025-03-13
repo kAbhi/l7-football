@@ -70,16 +70,16 @@ def seed_data():
 
     # Define 10 matches with the 5 locations
     matches = [
-        Match(team1_id="Barcelona", team2_id="Real Madrid", date="2025-04-10", location=locations["Barcelona"]),
-        Match(team1_id="Manchester United", team2_id="Bayern Munich", date="2025-04-11", location=locations["Manchester United"]),
-        Match(team1_id="Juventus", team2_id="Barcelona", date="2025-04-12", location=locations["Juventus"]),
+        Match(team1_id="Barcelona", team2_id="Real Madrid", date="2025-01-10", location=locations["Barcelona"]),
+        Match(team1_id="Manchester United", team2_id="Bayern Munich", date="2025-02-11", location=locations["Manchester United"]),
+        Match(team1_id="Juventus", team2_id="Barcelona", date="2025-03-12", location=locations["Juventus"]),
         Match(team1_id="Real Madrid", team2_id="Bayern Munich", date="2025-04-13", location=locations["Real Madrid"]),
         Match(team1_id="Manchester United", team2_id="Juventus", date="2025-04-14", location=locations["Manchester United"]),
         Match(team1_id="Bayern Munich", team2_id="Barcelona", date="2025-04-15", location=locations["Bayern Munich"]),
-        Match(team1_id="Juventus", team2_id="Real Madrid", date="2025-04-16", location=locations["Juventus"]),
-        Match(team1_id="Barcelona", team2_id="Manchester United", date="2025-04-17", location=locations["Barcelona"]),
-        Match(team1_id="Real Madrid", team2_id="Manchester United", date="2025-04-18", location=locations["Real Madrid"]),
-        Match(team1_id="Bayern Munich", team2_id="Juventus", date="2025-04-19", location=locations["Bayern Munich"]),
+        Match(team1_id="Juventus", team2_id="Real Madrid", date="2025-05-16", location=locations["Juventus"]),
+        Match(team1_id="Barcelona", team2_id="Manchester United", date="2025-06-17", location=locations["Barcelona"]),
+        Match(team1_id="Real Madrid", team2_id="Manchester United", date="2025-07-18", location=locations["Real Madrid"]),
+        Match(team1_id="Bayern Munich", team2_id="Juventus", date="2025-08-19", location=locations["Bayern Munich"]),
     ]
 
     db.session.bulk_save_objects(matches)
