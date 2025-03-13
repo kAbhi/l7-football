@@ -38,19 +38,36 @@ players_bp = Blueprint('players', __name__)
 def get_players():
     """
     Fetch all players with an optional team filter.
-
-    - If **team** is provided, returns only players from that team.
-    - If no filter is provided, returns all players.
-
-    **Query Parameters:**
-    - `team` (optional) → Filters players by team name.
-
-    **Example Usage:**
-    - `/players` → Returns all players.
-    - `/players?team=Barcelona` → Returns players from "Barcelona".
-
-    **Response:**
-    - `200 OK` → Returns a list of players.
+    ---
+    tags:
+      - Players
+    parameters:
+      - name: team
+        in: query
+        type: string
+        required: false
+        description: Filter players by team name (Example "Barcelona").
+    produces:
+      - application/json
+    responses:
+      200:
+        description: List of players
+        schema:
+          type: array
+          items:
+            properties:
+              id:
+                type: integer
+                description: Player ID
+              name:
+                type: string
+                description: Player Name
+              team:
+                type: string
+                description: Team Name
+              position:
+                type: string
+                description: Player Position
     """
     team = request.args.get("team", None)
 
@@ -105,24 +122,53 @@ def get_players():
 def add_player():
     """
     Add a new football player.
-
-    **Request Body:**
-    - `name` (string) → Player's full name.
-    - `team` (string) → The team the player belongs to.
-    - `position` (string) → Player's position on the field.
-
-    **Example Request Body:**
-    ```json
-    {
-      "name": "Lionel Messi",
-      "team": "Barcelona",
-      "position": "Forward"
-    }
-    ```
-
-    **Response:**
-    - `201 Created` → Player added successfully.
-    - `400 Bad Request` → Invalid input data.
+    ---
+    tags:
+      - Players
+    consumes:
+      - application/json
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Lionel Messi
+              description: Full name of the player.
+            team:
+              type: string
+              example: Barcelona
+              description: Team the player belongs to.
+            position:
+              type: string
+              example: Forward
+              description: Position the player plays in.
+          required:
+            - name
+            - team
+            - position
+    produces:
+      - application/json
+    responses:
+      201:
+        description: Player added successfully
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Player added successfully
+      400:
+        description: Invalid request data
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
+              example: Invalid input data
     """
     data = request.json
     player = Player(name=data["name"], team=data["team"], position=data["position"])

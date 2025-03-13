@@ -56,26 +56,55 @@ matches_bp = Blueprint('matches', __name__)
 })
 def get_matches():
     """
-    Fetch matches with optional filtering by team and month.
-
-    - If **team** is provided, returns matches where that team is playing.
-    - If **month** is provided, returns matches played in that month.
-    - If both **team** and **month** are provided, applies both filters.
-    - If no filters are provided, returns all matches.
-
-    **Query Parameters:**
-    - `team` (optional) → Filters matches by team name.
-    - `month` (optional) → Filters matches by month in `YYYY-MM` format.
-
-    **Example Usage:**
-    - `/matches` → Returns all matches.
-    - `/matches?team=Barcelona` → Returns matches where "Barcelona" is playing.
-    - `/matches?month=2025-04` → Returns matches played in April 2025.
-    - `/matches?team=Barcelona&month=2025-04` → Returns Barcelona matches in April 2025.
-
-    **Response:**
-    - `200 OK` → Returns a list of matches.
-    - `400 Bad Request` → If the `month` format is invalid.
+    Fetch all matches with optional filtering by team and month.
+    ---
+    tags:
+      - Matches
+    parameters:
+      - name: team
+        in: query
+        type: string
+        required: false
+        description: Filter matches where the specified team is playing. Example "Barcelona".
+      - name: month
+        in: query
+        type: string
+        format: YYYY-MM
+        required: false
+        description: Filter matches played in a specific month. Format "YYYY-MM". Example "2025-04".
+    produces:
+      - application/json
+    responses:
+      200:
+        description: List of matches
+        schema:
+          type: array
+          items:
+            properties:
+              id:
+                type: integer
+                description: Match ID
+              team1:
+                type: string
+                description: Name of Team 1
+              team2:
+                type: string
+                description: Name of Team 2
+              date:
+                type: string
+                format: date
+                description: Match date in YYYY-MM-DD format
+              location:
+                type: string
+                description: Match venue
+      400:
+        description: Invalid month format
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
+              example: Invalid month format. Use YYYY-MM
     """
     team = request.args.get("team", None)
     month = request.args.get("month", None)
