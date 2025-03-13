@@ -90,13 +90,8 @@ button:focus-visible {
 /* ========== Page Layout ========== */
 .container {
   width: 100%;
-  max-width: 800px;
   margin: 20px auto 0;
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -145,6 +140,25 @@ button:focus-visible {
   background-color: #5a6268;
 }
 
+.tab-menu {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tab-menu button {
+  background: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.tab-menu button.active {
+  background: #0056b3;
+}
+
 /* ========== Form Styling ========== */
 form {
   display: flex;
@@ -171,4 +185,38 @@ form {
 
 .api-docs-button:hover {
   background-color: #218838; /* Darker green on hover */
+}
+
+/* ============= Card Styling =================== */
+/* Cards Layout */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+  gap: 15px;
+  margin-top: 20px;
+}
+
+/* Individual Card */
+.card {
+  background: white;
+  color: black;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card h3 {
+  margin: 0;
+  font-size: 1.3em;
+  color: #007bff;
+}
+
+.card p {
+  margin: 5px 0;
+  font-size: 1em;
 }

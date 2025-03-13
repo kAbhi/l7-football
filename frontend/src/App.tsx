@@ -4,6 +4,7 @@ import Matches from "./components/Matches";
 import Teams from "./components/Teams";
 import Players from "./components/Players";
 import Areas from "./components/Areas";
+import Admin from "./components/Admin";
 
 const App = () => (
   <BrowserRouter>
@@ -13,6 +14,7 @@ const App = () => (
       <Route path="/teams" element={<Teams />} />
       <Route path="/players" element={<Players />} />
       <Route path="/areas" element={<Areas />} />
+      <Route path="/admin" element={<Admin />} />
     </Routes>
   </BrowserRouter>
 );

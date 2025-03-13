@@ -8,6 +8,7 @@ const Home = () => (
         <Link to="/teams"><button className="primary-button">Teams</button></Link>
         <Link to="/players"><button className="primary-button">Players</button></Link>
         <Link to="/areas"><button className="primary-button">Areas</button></Link>
+        <Link to="/admin"><button className="primary-button">Admin</button></Link>
         <a href="http://localhost:5000/apidocs/" target="_blank" rel="noopener noreferrer">
           <button className="api-docs-button">API Docs</button>
         </a>
