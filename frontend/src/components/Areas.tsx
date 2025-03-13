@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import AddAreaForm from "./AddAreaForm";
 
 const Areas = () => {
   const [areas, setAreas] = useState([]);
-  const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
 
   const fetchAreas = async () => {
@@ -20,7 +18,6 @@ const Areas = () => {
       <div className="button-group">
           <button className="primary-button" onClick={fetchAreas}>Get Areas</button>
       </div>
-      <ul>{areas.map((a) => <li key={a.id}>{a.city}, {a.country}</li>)}</ul>
     </div>
   );
 };
