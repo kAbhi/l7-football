@@ -59,19 +59,61 @@ def get_teams():
     }
 })
 def add_team():
-    """Add a new team
+    """
+    Add a new team.
     ---
     tags:
       - Teams
-    requestBody:
-      description: Team details
-      required: true
+    consumes:
+      - application/json
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Barcelona
+              description: Name of the team.
+            country:
+              type: string
+              example: Spain
+              description: Country of the team.
+          required:
+            - name
+            - country
+    produces:
+      - application/json
     responses:
       201:
         description: Team added successfully
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Team added successfully
+      400:
+        description: Validation error (duplicate team name)
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
+              example: Team already exists.
     """
     data = request.json
+
+    # Check if the team name already exists
+    existing_team = Team.query.filter_by(name=data["name"]).first()
+    if existing_team:
+        return jsonify({"error": "Team already exists."}), 400
+
+    # Create new team
     team = Team(name=data["name"], country=data["country"])
     db.session.add(team)
     db.session.commit()
+
     return jsonify({"message": "Team added successfully"}), 201
