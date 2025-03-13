@@ -165,13 +165,20 @@ CORS(app, resources={r"/*": {"origins": "*"}})
    ```
 
 ---
+## **📌 Future Roadmap**
+### **🎯 Planned Enhancements**
 
-## **📌 Next Steps**
-### **🎯 Future Enhancements**
+✅ **Integrate Match Status & Filtering**
+- Display match results for completed games and indicate **"Yet to Play"** for upcoming fixtures.
+- Implement a **result-based filter** to quickly view completed and upcoming matches.
 
-✅ **Add redirects to cards and get more details about matches, teams and players**
+✅ **Enhanced Match, Team & Player Insights**
+- Enable clickable cards that **redirect to detailed pages** for matches, teams, and players.
+- Provide comprehensive statistics and historical data for better user engagement.
+- User following a Player can look at the detailed page of the Players.
 
-✅ **Add real-time updates using WebSockets**
+✅ **Real-Time Match Updates**
+- Implement **WebSocket-based live updates** to dynamically refresh match scores, player stats, and team performance.
 
 ---
 
