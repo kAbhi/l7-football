@@ -6,6 +6,18 @@ players_bp = Blueprint('players', __name__)
 
 @players_bp.route('/players', methods=['GET'])
 @swag_from({
+    'summary': 'Fetch players with optional team filter',
+    'description': 'Retrieve a list of players. You can filter results by team.',
+    'tags': ['Players'],
+    'parameters': [
+        {
+            'name': 'team',
+            'in': 'query',
+            'type': 'string',
+            'required': False,
+            'description': 'Filter players by team name. Example: "Barcelona"'
+        }
+    ],
     'responses': {
         200: {
             'description': 'List of players',
@@ -13,10 +25,10 @@ players_bp = Blueprint('players', __name__)
                 'type': 'array',
                 'items': {
                     'properties': {
-                        'id': {'type': 'integer'},
-                        'name': {'type': 'string'},
-                        'team': {'type': 'string'},
-                        'position': {'type': 'string'}
+                        'id': {'type': 'integer', 'description': 'Player ID'},
+                        'name': {'type': 'string', 'description': 'Player Name'},
+                        'team': {'type': 'string', 'description': 'Team Name'},
+                        'position': {'type': 'string', 'description': 'Player Position'}
                     }
                 }
             }
@@ -24,17 +36,22 @@ players_bp = Blueprint('players', __name__)
     }
 })
 def get_players():
-    """Fetch all players
-    ---
-    tags:
-      - Players
-    produces:
-      - application/json
-    responses:
-      200:
-        description: List of players
     """
-    """Fetch matches with optional filters for team and month."""
+    Fetch all players with an optional team filter.
+
+    - If **team** is provided, returns only players from that team.
+    - If no filter is provided, returns all players.
+
+    **Query Parameters:**
+    - `team` (optional) → Filters players by team name.
+
+    **Example Usage:**
+    - `/players` → Returns all players.
+    - `/players?team=Barcelona` → Returns players from "Barcelona".
+
+    **Response:**
+    - `200 OK` → Returns a list of players.
+    """
     team = request.args.get("team", None)
 
     query = Player.query
@@ -45,6 +62,9 @@ def get_players():
 
 @players_bp.route('/players', methods=['POST'])
 @swag_from({
+    'summary': 'Add a new player',
+    'description': 'Create a new football player entry with name, team, and position.',
+    'tags': ['Players'],
     'parameters': [
         {
             'name': 'body',
@@ -53,30 +73,56 @@ def get_players():
             'schema': {
                 'type': 'object',
                 'properties': {
-                    'name': {'type': 'string'},
-                    'team': {'type': 'string'},
-                    'position': {'type': 'string'}
+                    'name': {'type': 'string', 'example': 'Lionel Messi'},
+                    'team': {'type': 'string', 'example': 'Barcelona'},
+                    'position': {'type': 'string', 'example': 'Forward'}
                 },
                 'required': ['name', 'team', 'position']
             }
         }
     ],
     'responses': {
-        201: {'description': 'Player added successfully'},
-        400: {'description': 'Invalid input data'}
+        201: {
+            'description': 'Player added successfully',
+            'schema': {
+                'type': 'object',
+                'properties': {
+                    'message': {'type': 'string', 'example': 'Player added successfully'}
+                }
+            }
+        },
+        400: {
+            'description': 'Invalid request data',
+            'schema': {
+                'type': 'object',
+                'properties': {
+                    'error': {'type': 'string', 'example': 'Invalid input data'}
+                }
+            }
+        }
     }
 })
 def add_player():
-    """Add a new player
-    ---
-    tags:
-      - Players
-    requestBody:
-      description: Player details
-      required: true
-    responses:
-      201:
-        description: Player added successfully
+    """
+    Add a new football player.
+
+    **Request Body:**
+    - `name` (string) → Player's full name.
+    - `team` (string) → The team the player belongs to.
+    - `position` (string) → Player's position on the field.
+
+    **Example Request Body:**
+    ```json
+    {
+      "name": "Lionel Messi",
+      "team": "Barcelona",
+      "position": "Forward"
+    }
+    ```
+
+    **Response:**
+    - `201 Created` → Player added successfully.
+    - `400 Bad Request` → Invalid input data.
     """
     data = request.json
     player = Player(name=data["name"], team=data["team"], position=data["position"])
