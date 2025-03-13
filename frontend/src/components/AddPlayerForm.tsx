@@ -19,7 +19,7 @@ const AddPlayerForm = ({ onPlayerAdded }) => {
       setPosition("");
     } catch (err) {
       if (err.response && err.response.status === 400) {
-        setError(err.response.data.error); // Display duplicate error
+        setError(err.response.data.error); // Display validation error
       } else {
         setError("Something went wrong. Please try again.");
       }

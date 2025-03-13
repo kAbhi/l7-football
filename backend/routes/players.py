@@ -162,22 +162,27 @@ def add_player():
               type: string
               example: Player added successfully
       400:
-        description: Validation error (duplicate player name)
+        description: Validation error (team does not exist or duplicate player name)
         schema:
           type: object
           properties:
             error:
               type: string
-              example: Player with this name already exists.
+              example: The specified team does not exist. Please add the team before adding a player.
     """
     data = request.json
 
-    # Check if the player name already exists
+    # Check if the team exists
+    existing_team = Team.query.filter_by(name=data["team"]).first()
+    if not existing_team:
+        return jsonify({"error": "The specified team does not exist. Please add the team before adding a player."}), 400
+
+    # Check if player with the same name already exists
     existing_player = Player.query.filter_by(name=data["name"]).first()
     if existing_player:
-        return jsonify({"error": "Player with this name already exists."}), 400
+        return jsonify({"error": "A player with this name already exists."}), 400
 
-    # Create new player
+    # Create and save the new player
     player = Player(name=data["name"], team=data["team"], position=data["position"])
     db.session.add(player)
     db.session.commit()
