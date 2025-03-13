@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from models import db, Match, Areas, Team
+from models import db, Match, Team
 from flasgger import swag_from
 from datetime import datetime
 
@@ -232,11 +232,6 @@ def add_match():
 
     if not team1_exists or not team2_exists:
         return jsonify({"error": "One or both teams do not exist. Please check the team names."}), 400
-
-    # Check if the location exists in the Areas table
-    location_exists = Areas.query.filter_by(name=data["location"]).first()
-    if not location_exists:
-        return jsonify({"error": "The match location does not exist. Please add the location before scheduling a match."}), 400
 
     # Create and save new match
     match = Match(team1_id=data["team1"], team2_id=data["team2"], date=data["date"], location=data["location"])
