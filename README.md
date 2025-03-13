@@ -1,25 +1,24 @@
-# 🏆 L7 Football
+# ⚽ L7 Football System  
 
-This project is a **sports match tracking web application** that allows users to:  
-✅ View **live matches, teams, and players** in a **card-based UI**  
+This project is a **football match management web application** that allows users to:  
+✅ **View live matches, teams, and players** in a **card-based UI**  
 ✅ **Filter matches** by **team and month**  
 ✅ **Manage teams, players, and matches** via an **Admin Panel**  
-✅ **Automatically fetch data on page load**  
-✅ **Use a clean and interactive UI.**
+✅ **Search and select teams using a dropdown with a search bar**
 
 ---
 
 ## 🚀 **Tech Stack**
 ### **Backend (Flask)**
-- Python 3.x, Flask, Flask-SQLAlchemy
-- Flask-CORS (for frontend-backend communication)
-- SQLite (default) or PostgreSQL (for production)
+- Python 3.x, Flask, Flask-SQLAlchemy  
+- Flask-CORS (for frontend-backend communication)  
+- SQLite (default) or PostgreSQL (for production)  
 
 ### **Frontend (React + TypeScript)**
-- React, TypeScript, Vite
-- Axios (for API requests)
-- React Router (for navigation)
-- Tailwind CSS (for styling)
+- React, TypeScript, Vite  
+- Axios (for API requests)  
+- React Router (for navigation)  
+- Tailwind CSS (for styling)  
 
 ---
 
@@ -76,16 +75,16 @@ npm run dev
 | POST   | `/matches`                   | Add a new match                           |
 
 ### **🔹 Teams API**
-| Method | Endpoint   | Description            |
-|--------|-----------|------------------------|
-| GET    | `/teams`  | Get all teams          |
-| POST   | `/teams`  | Add a new team         |
+| Method | Endpoint   | Description                     |
+|--------|-----------|---------------------------------|
+| GET    | `/teams`  | Get all teams                   |
+| POST   | `/teams`  | Add a new team (with validation for duplicates) |
 
 ### **🔹 Players API**
-| Method | Endpoint   | Description            |
-|--------|-----------|------------------------|
-| GET    | `/players`  | Get all players      |
-| POST   | `/players`  | Add a new player     |
+| Method | Endpoint   | Description                                      |
+|--------|-----------|--------------------------------------------------|
+| GET    | `/players`  | Get all players                              |
+| POST   | `/players`  | Add a new player (checks if team exists) |
 
 ### **🔹 Areas API**
 | Method | Endpoint   | Description                     |
@@ -100,17 +99,20 @@ npm run dev
 ✅ **Filters:**
 - Filter matches by **team**
 - Filter matches by **month**
+- Filter matches by **team & month**
 
 ### **🏆 Teams & Players Pages**
 ✅ **Automatically fetches all teams & players on page load**  
-✅ **Displays teams and players in a card-based layout**
+✅ **Displays teams and players in a card-based layout**  
+✅ **Searchable dropdowns for team selection**
 
 ### **🏆 Admin Panel**
 ✅ **Centralized page to add**:
 - **New Matches**
 - **New Teams**
 - **New Players**
-- ✅ **Tab-based UI for better navigation**
+
+✅ **Tab-based UI for better navigation**
 
 ---
 
@@ -126,6 +128,20 @@ npm run dev
    http://localhost:5000/apidocs/
    ```
 3. Test APIs directly in the browser.
+
+---
+
+## **📌 Input Validations**
+- **Teams:** Prevents duplicate team names when adding new teams.
+- **Players:**
+   - Prevents duplicate player names.
+   - Ensures the team exists before adding a player.
+- **Matches:**
+   - Prevents the **same team from having more than one match on the same date**.
+   - Prevents the **same location from hosting more than one match on the same date**.
+   - Ensures **teams exist before scheduling a match**.
+- **Dropdown Enhancements:**
+   - **Searchable team selection dropdowns** when adding **players** and **matches**.
 
 ---
 
@@ -147,6 +163,15 @@ CORS(app, resources={r"/*": {"origins": "*"}})
    ```bash
    python app.py
    ```
+
+---
+
+## **📌 Next Steps**
+### **🎯 Future Enhancements**
+
+✅ **Add redirects to cards and get more details about matches, teams and players**
+
+✅ **Add real-time updates using WebSockets**
 
 ---
 
