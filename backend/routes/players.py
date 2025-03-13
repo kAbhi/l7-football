@@ -34,7 +34,13 @@ def get_players():
       200:
         description: List of players
     """
-    players = Player.query.all()
+    """Fetch matches with optional filters for team and month."""
+    team = request.args.get("team", None)
+
+    query = Player.query
+    if team:
+        query = query.filter(Player.team == team)
+    players = query.all()
     return jsonify([{"id": p.id, "name": p.name, "team": p.team, "position": p.position} for p in players])
 
 @players_bp.route('/players', methods=['POST'])
