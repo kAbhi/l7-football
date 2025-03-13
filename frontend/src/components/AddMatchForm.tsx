@@ -107,13 +107,8 @@ const AddMatchForm = ({ onMatchAdded }) => {
         {/* Date Input */}
         <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
 
-        {/* Location Dropdown */}
-        <select value={location} onChange={(e) => setLocation(e.target.value)} required>
-          <option value="">Select Match Location</option>
-          {locations.map((loc) => (
-            <option key={loc.id} value={loc.name}>{loc.name}</option>
-          ))}
-        </select>
+        {/* Location Text Box */}
+        <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Location" required />
 
         <button type="submit">Add Match</button>
       </form>
