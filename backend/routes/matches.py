@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from models import db, Match
 from flasgger import swag_from
+from datetime import datetime
 
 matches_bp = Blueprint('matches', __name__)
 
@@ -35,7 +36,23 @@ def get_matches():
       200:
         description: List of matches
     """
-    matches = Match.query.all()
+    """Fetch matches with optional filters for team and month."""
+    team = request.args.get("team", None)
+    month = request.args.get("month", None)
+
+    query = Match.query
+    if team:
+        query = query.filter((Match.team1_id == team) | (Match.team2_id == team))
+    if month:
+        try:
+            start_date = datetime.strptime(month, "%Y-%m").replace(day=1)
+            end_date = datetime.strptime(month, "%Y-%m").replace(day=28)
+            query = query.filter(Match.date >= start_date.strftime("%Y-%m-%d"),
+                                 Match.date <= end_date.strftime("%Y-%m-%d"))
+        except ValueError:
+            return jsonify({"error": "Invalid month format. Use YYYY-MM"}), 400
+
+    matches = query.all()
     return jsonify([{"id": m.id, "team1": m.team1_id, "team2": m.team2_id, "date": m.date, "location": m.location} for m in matches])
 
 @matches_bp.route('/matches', methods=['POST'])

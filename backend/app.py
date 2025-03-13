@@ -11,7 +11,9 @@ from routes.areas import areas_bp
 app = Flask(__name__)
 app.config.from_object(Config)
 db.init_app(app)
-CORS(app)
+
+# Enable CORS for all routes
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Initialize Swagger
 swagger = Swagger(app)

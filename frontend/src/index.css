@@ -220,3 +220,19 @@ form {
   margin: 5px 0;
   font-size: 1em;
 }
+
+/* =================== Filters ================= */
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filters select {
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+}
