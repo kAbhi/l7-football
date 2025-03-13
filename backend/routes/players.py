@@ -121,7 +121,7 @@ def get_players():
 })
 def add_player():
     """
-    Add a new football player.
+    Add a new player to the system.
     ---
     tags:
       - Players
@@ -162,16 +162,24 @@ def add_player():
               type: string
               example: Player added successfully
       400:
-        description: Invalid request data
+        description: Validation error (duplicate player name)
         schema:
           type: object
           properties:
             error:
               type: string
-              example: Invalid input data
+              example: Player with this name already exists.
     """
     data = request.json
+
+    # Check if the player name already exists
+    existing_player = Player.query.filter_by(name=data["name"]).first()
+    if existing_player:
+        return jsonify({"error": "Player with this name already exists."}), 400
+
+    # Create new player
     player = Player(name=data["name"], team=data["team"], position=data["position"])
     db.session.add(player)
     db.session.commit()
+
     return jsonify({"message": "Player added successfully"}), 201
