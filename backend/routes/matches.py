@@ -168,12 +168,13 @@ def get_matches():
     }
 })
 def add_match():
-    """Add a new football match
+    """
+    Add a new match.
     ---
-    summary: Add a new match
-    description: Create a new football match entry with team names, match date, and location.
     tags:
       - Matches
+    consumes:
+      - application/json
     parameters:
       - name: body
         in: body
@@ -183,22 +184,28 @@ def add_match():
           properties:
             team1:
               type: string
-              example: "Barcelona"
+              example: Barcelona
+              description: Name of the first team.
             team2:
               type: string
-              example: "Real Madrid"
+              example: Real Madrid
+              description: Name of the second team.
             date:
               type: string
               format: date
-              example: "2025-04-15"
+              example: 2025-04-15
+              description: Match date in YYYY-MM-DD format.
             location:
               type: string
-              example: "Madrid"
+              example: Camp Nou
+              description: Location where the match is played.
           required:
             - team1
             - team2
             - date
             - location
+    produces:
+      - application/json
     responses:
       201:
         description: Match added successfully
@@ -207,18 +214,36 @@ def add_match():
           properties:
             message:
               type: string
-              example: "Match added successfully"
+              example: Match added successfully
       400:
-        description: Invalid request data
+        description: Validation error (duplicate match for team/date or location/date)
         schema:
           type: object
           properties:
             error:
               type: string
-              example: "Invalid input data"
+              example: A team already has a match on this date.
     """
     data = request.json
+
+    # Check if the same team already has a match on the same date
+    existing_team_match = Match.query.filter(
+        ((Match.team1_id == data["team1"]) | (Match.team2_id == data["team1"]) |
+         (Match.team1_id == data["team2"]) | (Match.team2_id == data["team2"])) &
+        (Match.date == data["date"])
+    ).first()
+
+    if existing_team_match:
+        return jsonify({"error": "A team already has a match on this date."}), 400
+
+    # Check if a match is already scheduled at the same location on the same date
+    existing_location_match = Match.query.filter_by(date=data["date"], location=data["location"]).first()
+    if existing_location_match:
+        return jsonify({"error": "A match is already scheduled at this location on this date."}), 400
+
+    # Create and save new match
     match = Match(team1_id=data["team1"], team2_id=data["team2"], date=data["date"], location=data["location"])
     db.session.add(match)
     db.session.commit()
+
     return jsonify({"message": "Match added successfully"}), 201
